@@ -51,15 +51,13 @@ class AwsLambdaStack(Stack):
             code=aws_lambda.Code.from_asset("lambdas"),
         )
 
-        private_fn_integration = aws_apigatewayv2_integrations.HttpLambdaIntegration(
-            "PrivateFnIntegration", private_fn
-        )
-
         api.add_routes(
             path="/private",
             methods=[aws_apigatewayv2.HttpMethod.GET],
             authorizer=authorizer,
-            integration=private_fn_integration,
+            integration=aws_apigatewayv2_integrations.HttpLambdaIntegration(
+                "PrivateFnIntegration", private_fn
+            ),
         )
 
         # Create a lambda function to manage the Public route
@@ -70,12 +68,10 @@ class AwsLambdaStack(Stack):
             code=aws_lambda.Code.from_asset("lambdas"),
         )
 
-        public_fn_integration = aws_apigatewayv2_integrations.HttpLambdaIntegration(
-            "PublicFnIntegration", public_fn
-        )
-
         api.add_routes(
             path="/public",
             methods=[aws_apigatewayv2.HttpMethod.GET],
-            integration=public_fn_integration,
+            integration=aws_apigatewayv2_integrations.HttpLambdaIntegration(
+                "PublicFnIntegration", public_fn
+            ),
         )
