@@ -35,9 +35,8 @@ class AwsLambdaStack(Stack):
         # Create an authorizer for the private route
         # https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html
         authorizer = aws_apigatewayv2_authorizers.HttpUserPoolAuthorizer(
-            "Authorizer",
-            user_pool,
-            user_pool_clients=[user_pool_client],
+            "Authorizer", user_pool,
+            user_pool_clients=[user_pool_client],  # If unspecified, a new client will be created
         )
 
         # Create an HTTP API
